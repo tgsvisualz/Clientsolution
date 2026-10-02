@@ -1,0 +1,60 @@
+# Client context: Voltizone (Meta ads purchase tracking)
+
+Notes carried over from an earlier session (2026-10-02). Read this before working on the Voltizone project.
+
+## The client
+
+- **Voltizone**: Ninja Warrior / parkour gym with two locations in Quebec: **Mascouche** and **Laval**.
+- Website: https://www.voltizone.com, built on **Wix**, French-language.
+- Booking and payments: **Bookeo** (bookeo.com). The user sometimes calls it "Book.io"; it is Bookeo.
+  - Bookeo is embedded on two Wix pages: `/page-bookeo` ("Bookeo ninja Mascouche") and `/copie-de-bookeo-ninja-laval` ("Bookeo parkour Laval"). Possibly one Bookeo account per location; not confirmed.
+  - Payments run through a processor connected inside Bookeo (Bookeo supports Stripe, Square, PayPal and others).
+- Voltizone also has listings on WellnessLiving (Laval) and ClassPass. Still need to ask whether anything is sold through WellnessLiving.
+- They run Meta (Facebook/Instagram) ads. They can see ad clicks and site visits, but **cannot see whether people who clicked an ad went on to book and pay**. Wix and Bookeo each blame the other.
+
+## Diagnosis
+
+- Wix's "Embed HTML" element puts the Bookeo widget inside a Wix-owned iframe on `filesusr.com`. The widget then loads its own `bookeo.com` iframe inside that.
+- Bookeo's Meta pixel help article says the widget must be inserted directly in the page "without intermediate frames," and that tracking may not work on Wix for exactly this reason. Bookeo's own Wix setup guide still tells you to use Embed HTML.
+- Result: the Wix pixel sees visits, but Bookeo's Purchase event is cut off from the ad click, so no purchases are attributed to the ads.
+- **Not yet verified on the live site.** The environment's network policy blocked voltizone.com and bookeo.com, so this diagnosis comes from Bookeo and Wix docs plus search results.
+
+## Options discussed
+
+1. **Server-side feed:** Bookeo (Zapier "New booking" trigger, or Bookeo API webhooks) sends a Purchase event to the Meta Conversions API. It's robust, but the user felt it was too complex for the client. Keep it as an optional later add-on.
+2. **Chosen direction: build our own page(s) or site with the Bookeo widget code directly in the page (no iframe).**
+   - Then turn on Bookeo's built-in Meta pixel (Bookeo: Marketing → Conversion tracking and analytics → Facebook Pixel ID).
+   - Use the same pixel ID as the site, for both locations.
+   - Bookeo stays as-is for booking and payments; nothing changes for the client's staff.
+   - Bookeo fires these events: AddToCart, AddPaymentInfo, InitiateCheckout and Purchase (with service name, fee and SKU).
+   - **Smallest version:** booking pages on a subdomain such as `book.voltizone.com`, one per location, with Wix "Book" buttons pointing there. Meta pixel cookies (`_fbp`/`_fbc`) are set on `.voltizone.com`, so the ad-click data carries over.
+   - **Bigger version:** a full new site. Redirect the old URLs to keep Google rankings, and keep the content French-first.
+   - **Rule:** embed the widget, don't link out to bookeo.com hosted pages. Bookeo only tracks properly when the widget is on your own site.
+
+## Requirements and caveats
+
+- **Quebec Law 25:** tracking must be off by default until the visitor opts in. That means a cookie consent banner that blocks the Meta pixel until accepted. Verify that Bookeo's widget tracking also waits for consent, and update the privacy policy.
+- **Not 100%:** people who decline cookies, use ad blockers, or have some iPhone privacy settings won't be counted. The goal is to go from seeing zero bookings to seeing most bookings from people who accept.
+- **Testing:** make a real booking (then refund it), confirm "Purchase" appears in Meta Events Manager under Test events, and check with Meta Pixel Helper.
+- **Quick reporting trick:** Bookeo supports `?source=` on booking links, and the value shows in Bookeo's Bookings report.
+
+## Open questions / next steps
+
+- The user is deciding between **booking pages only** and a **full new site**.
+- For network access, the environment needs these domains: `voltizone.com`, `www.voltizone.com`, `static.wixstatic.com`, `bookeo.com`, `www.bookeo.com`, `support.bookeo.com`. They're needed to pull site content and inspect the current embed.
+- Needed from the client:
+  - Bookeo admin access for both locations, to get the widget code (Settings → Theme and Layout → Website integration).
+  - Meta Business Manager access to the pixel and the ad account.
+  - Wix access.
+  - Domain/DNS access, if using a subdomain.
+
+## Sources
+
+- Bookeo, Meta pixel: https://support.bookeo.com/hc/en-us/articles/360017923772-How-can-I-create-a-Facebook-conversion-tracking-pixel-on-Bookeo
+- Bookeo, Wix integration: https://support.bookeo.com/hc/en-us/articles/360018197571-Integration-in-a-Wix-com-website
+- Bookeo, GA not tracking (filesusr.com frame): https://support.bookeo.com/hc/en-us/articles/360018201631-Google-Analytics-is-not-tracking-traffic-sources-conversions-correctly
+- Bookeo, booking source tracking: https://support.bookeo.com/hc/en-us/articles/360017919212-Can-I-track-the-source-of-bookings-in-Bookeo
+- Bookeo, payment gateways: https://support.bookeo.com/hc/en-us/articles/360023559032-Payment-gateways-supported-by-Bookeo-online-payments
+- Bookeo, API webhooks: https://www.bookeo.com/api/webhooks/
+- Meta, Conversions API with Zapier: https://developers.facebook.com/documentation/ads-commerce/conversions-api/guides/zapier-integration
+- Quebec Law 25 and cookies: https://www.mccarthy.ca/en/insights/blogs/techlex/quebecs-law-25-and-cookies-not-so-cookie-cutter
