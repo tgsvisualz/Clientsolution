@@ -65,7 +65,17 @@ Notes carried over from an earlier session (2026-10-02). Read this before workin
 
 ## Open questions / next steps
 
-- The user is deciding between **booking pages only** and a **full new site**. They are now leaning toward a full rebuild that mirrors the current site, with the problems fixed.
+- **Current direction: booking pages only.** The user stepped back from a full rebuild because it involves too many changes.
+  - Build two small booking pages (Mascouche and Laval) on `book.voltizone.com`, with the Bookeo widget directly on each page.
+  - Keep the Wix site as-is, and point its "Book now" buttons (and optionally the ads) to the new pages.
+  - Host the pages on the agency's account (for example Cloudflare Pages or Netlify).
+- **User's must-haves:** safe; lives inside their site (their domain and branding); easy for customers and staff; tracks at least most sales.
+- **Plan:** prove it before going live. Build a test page, make a real test booking and refund it, confirm "Purchase" in Meta Events Manager, and only then switch the live buttons.
+- **Access:** ask the client for invites, not passwords:
+  - Wix collaborator, via Settings → Roles & Permissions.
+  - Bookeo user, for both locations.
+  - Meta partner access to the pixel and ad account, via Business Settings → Partners.
+  - Domain/DNS access to add the `book` record. The client can enter that one record themselves if they prefer.
 - For network access, the environment needs these domains: `voltizone.com`, `www.voltizone.com`, `static.wixstatic.com`, `bookeo.com`, `www.bookeo.com`, `support.bookeo.com`. They're needed to pull site content and inspect the current embed.
 - Needed from the client:
   - Bookeo admin access for both locations, to get the widget code (Settings → Theme and Layout → Website integration).
