@@ -76,12 +76,9 @@ Notes carried over from an earlier session (2026-10-02). Read this before workin
   - Bookeo user, for both locations.
   - Meta partner access to the pixel and ad account, via Business Settings → Partners.
   - Domain/DNS access to add the `book` record. The client can enter that one record themselves if they prefer.
-- For network access, the environment needs these domains: `voltizone.com`, `www.voltizone.com`, `static.wixstatic.com`, `bookeo.com`, `www.bookeo.com`, `support.bookeo.com`. They're needed to pull site content and inspect the current embed.
-- Needed from the client:
-  - Bookeo admin access for both locations, to get the widget code (Settings → Theme and Layout → Website integration).
-  - Meta Business Manager access to the pixel and the ad account.
-  - Wix access.
-  - Domain/DNS access, if using a subdomain.
+- Get each location's Bookeo widget code from Bookeo: Settings → Theme and Layout → Website integration.
+- **Status at the end of the 2026-10-02 session:** network access was still blocked (voltizone.com not reachable from this environment). The user is meeting the client next.
+- **Full conversation recap and client-meeting talking points:** `notes/voltizone-conversation-2026-10-02.md`.
 
 ## Sources
 
