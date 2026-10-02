@@ -38,9 +38,34 @@ Notes carried over from an earlier session (2026-10-02). Read this before workin
 - **Testing:** make a real booking (then refund it), confirm "Purchase" appears in Meta Events Manager under Test events, and check with Meta Pixel Helper.
 - **Quick reporting trick:** Bookeo supports `?source=` on booking links, and the value shows in Bookeo's Bookings report.
 
+## If we rebuild the full site (migration notes)
+
+- Wix can't export a site. A rebuild means copying the content (text, and photos from `static.wixstatic.com`) and recreating the design.
+- **Rankings** belong to the domain and the page addresses. To keep them:
+  - Keep `voltizone.com`.
+  - Keep the same page addresses where possible, and add 301 redirects for any that change (for example `/copie-de-bookeo-ninja-laval`).
+  - Copy each page's title and meta description.
+  - Submit the new sitemap in Google Search Console after launch.
+  - Expect a few weeks of small ranking fluctuation.
+- **Email runs on the domain:** `ninja@voltizone.com` (Mascouche) and `ninjalaval@voltizone.com` (Laval). Keep the MX records when changing DNS.
+- **Domain:** check where it's registered (Wix or elsewhere). Don't cancel Wix until the new site is live and verified.
+- **Wix extras to replace:** forms, contacts (export them first), newsletters and any Wix apps.
+- **Editing:** the client edits the site themselves on Wix today. A custom site needs a simple editor, or a maintenance plan where we make the changes.
+- **Language:** keep the site French-first (Quebec language law).
+- **Next step once network access works:** crawl `sitemap.xml` and produce a page-by-page plan (keep / redirect / replace) to show the client.
+
+## Network access (this environment)
+
+- `voltizone.com`, `bookeo.com` and `support.bookeo.com` were blocked by the environment's network policy.
+- **Fix:**
+  - At claude.ai/code, click the cloud icon showing the environment name, just above the message box.
+  - Go to **Cloud**, hover over the environment, then click the gear icon.
+  - Set **Network access** to **Full**, or to **Custom** with these allowed domains: `voltizone.com`, `*.voltizone.com`, `*.wixstatic.com`, `*.filesusr.com`, `bookeo.com`, `*.bookeo.com`. With Custom, also tick "Also include default list of common package managers".
+- Changes reach running sessions within about a minute.
+
 ## Open questions / next steps
 
-- The user is deciding between **booking pages only** and a **full new site**.
+- The user is deciding between **booking pages only** and a **full new site**. They are now leaning toward a full rebuild that mirrors the current site, with the problems fixed.
 - For network access, the environment needs these domains: `voltizone.com`, `www.voltizone.com`, `static.wixstatic.com`, `bookeo.com`, `www.bookeo.com`, `support.bookeo.com`. They're needed to pull site content and inspect the current embed.
 - Needed from the client:
   - Bookeo admin access for both locations, to get the widget code (Settings → Theme and Layout → Website integration).
