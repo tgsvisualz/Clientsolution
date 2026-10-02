@@ -117,6 +117,23 @@ Wix "Book now" ────┘    (Bookeo calendar)
   - **Still blocked at the end of this session.**
 - **Notes:** saved to this repo. `CLAUDE.md` has the key facts and is read automatically by new sessions; this file is the full recap.
 
+## 8. Follow-up: every service page has its own Bookeo booking
+
+- **What you noticed:** each service page on Voltizone's site has its own Bookeo booking. You shared a category link: `www-152h.bookeo.com/bookeo/b_inscriptions_start.html?...&category=...`.
+- **Your worry:** ads would have to go straight to the booking page, skipping the info page where people check ages, times and how many kids. Wouldn't that complicate things and kill the tracking?
+- **Answer: no, the tracking survives, and people can read the info first.**
+  - **One booking page per service.** Bookeo can generate a booking calendar for one specific service or category (Marketing → Booking button and links). We make one booking page per service per location, all from one template, so many pages aren't much more work than two. Each "Réserver" button on the Wix info pages points to its matching booking page.
+  - **Ads can keep going to the info pages.** The ad click is remembered across all of voltizone.com, including `book.voltizone.com`. Someone can land on the info page, read everything, click "Réserver" and pay, and Meta still connects it to the ad. That holds even if they come back a few days later on the same device.
+  - **Every online booking goes through these pages.** Customers won't notice; they click "Réserver" on the same info pages as today.
+  - **The link you shared opens on bookeo.com**, not voltizone.com. That's exactly the kind of link that loses the ad connection today.
+  - **Confirmed in the test before going live:** the ad click carries from the Wix pages to the booking pages.
+
+```
+Meta ad → voltizone.com info page (ages, times, prices)
+          → "Réserver" → book.voltizone.com booking page for that service
+          → pay → "Purchase" in Meta ✅
+```
+
 ---
 
 ## For your client meeting
@@ -138,6 +155,7 @@ Wix "Book now" ────┘    (Bookeo calendar)
 - **Cookie banner:** do they have one on the Wix site today?
 - **Other systems:** do they sell anything outside Bookeo, for example through WellnessLiving (listed for Laval)?
 - **Ads:** which offers do their ads push most (birthday parties, free time, classes)? That decides where each ad should point.
+- **Services:** what is the full list of services they sell online at each location (birthday parties, free time, classes, camps)? That's how many booking pages we make.
 
 ### Access to request (invites, not passwords)
 

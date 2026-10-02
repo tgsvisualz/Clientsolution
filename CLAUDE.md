@@ -66,9 +66,20 @@ Notes carried over from an earlier session (2026-10-02). Read this before workin
 ## Open questions / next steps
 
 - **Current direction: booking pages only.** The user stepped back from a full rebuild because it involves too many changes.
-  - Build two small booking pages (Mascouche and Laval) on `book.voltizone.com`, with the Bookeo widget directly on each page.
-  - Keep the Wix site as-is, and point its "Book now" buttons (and optionally the ads) to the new pages.
+  - Each service page on the Wix site has its own Bookeo booking, specific to that service or category.
+    - Example link the user shared: `https://www-152h.bookeo.com/bookeo/b_inscriptions_start.html?...&category=3152RPW73618B1B26A013`.
+    - It's a Bookeo-hosted page, so it loses the ad connection.
+  - Build one booking page per service per location on `book.voltizone.com`. One template, many pages.
+    - Each page gets that service's own Bookeo widget code (Bookeo: Marketing → Booking button and links → pick the category or service → copy the widget code).
+    - Also build one main booking page per location with the full widget. Bookeo requires the main widget on some page whenever specific widgets are used.
+  - Keep the Wix info pages as-is, and point each "Réserver"/"Book now" button to its matching booking page.
+  - **Ads can keep pointing to the Wix info pages.**
+    - The Meta pixel saves the ad click on `.voltizone.com`, so it follows the visitor to `book.voltizone.com`.
+    - Check this in the test: land with `?fbclid=test` and confirm the `_fbc` cookie is readable on the booking subdomain.
   - Host the pages on the agency's account (for example Cloudflare Pages or Netlify).
+- **Next step once network access works:**
+  - Crawl the Wix site and list every Bookeo link and widget (service × location) to size the job.
+  - `*.bookeo.com` in the allowlist also covers `www-152h.bookeo.com`.
 - **User's must-haves:** safe; lives inside their site (their domain and branding); easy for customers and staff; tracks at least most sales.
 - **Plan:** prove it before going live. Build a test page, make a real test booking and refund it, confirm "Purchase" in Meta Events Manager, and only then switch the live buttons.
 - **Access:** ask the client for invites, not passwords:
